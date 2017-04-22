@@ -24,8 +24,8 @@ android:orientation="vertical">
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:text="whatever" />
-        <!-- todo delete whatever and instead reference the resource -->
+            android:text="@string/whatever"
+            />
     </LinearLayout>
 
 </LinearLayout>
