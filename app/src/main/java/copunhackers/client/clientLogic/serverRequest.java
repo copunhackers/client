@@ -26,7 +26,6 @@ public class serverRequest {
     }
 
     public String dropMessage(String jsonStringObject) throws IOException {
-
         return work(jsonStringObject, "drop");
     }
 
