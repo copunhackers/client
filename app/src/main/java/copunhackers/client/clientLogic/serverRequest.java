@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 /**
  * Created by Andreas on 22-04-2017.
  */
-public class serverRequest {
+public class ServerRequest {
 
    /* public static void main(String[] args)throws IOException{
         serverRequest sr = new serverRequest();
@@ -68,6 +68,4 @@ public class serverRequest {
 
         return response.toString();
     }
-
-
 }

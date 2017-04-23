@@ -53,38 +53,74 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        builder.setMessage("Enter your message")
-                .setCancelable(true)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
+        final View v = inflater.inflate(R.layout.messagedialog, null);
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Enter your message")
+                .setView(v)
+                .setPositiveButton("send", null)
+                .setNegativeButton("cancel", null)
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface d) {
 
+                Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        EditText text = (EditText) v.findViewById(R.id.content);
+                        String value = text.getText().toString();
+
+                        Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT ).show();
+                        /*
+                        String responds = functionCall(value);
+                        if(responds.length==0){
+                            //Dismiss once everything is OK.
+                            dialog.dismiss();
+                        }
+                        else{
+                            Toast.makeText(getBaseContext(), responds, Toast.LENGTH_SHORT ).show();
+                        }
+                        */
                     }
-                })
+                });
+            }
+        });
+        /*
+        Dialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        builder.setMessage("Enter your message")
                 .setView(inflater.inflate(R.layout.messagedialog, null))
                 .setPositiveButton("send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String username = ((EditText) findViewById(R.id.username)).getText().toString();
-                        String content = ((EditText) findViewById(R.id.content)).getText().toString();
+
+                        EditText text = (EditText) findViewById(R.id.content);
+                        String value = text.getText().toString();
+
+                        //take the input values.
+                        //call function to get location.
+                        //Turn it all into a json object.
+                        //
+
+
+                        Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT ).show();
 
                         logic.prepareMessage(username, content);
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+                .setNegativeButton("cancel", null);
 
         final AlertDialog dialog = builder.create();
+         */
+
+
 
         Button button = (Button) findViewById(R.id.messageButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();
-
-                Toast.makeText(getBaseContext(), "Hello", Toast.LENGTH_SHORT ).show();
             }
         });
 
@@ -168,6 +204,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    public void prepareMessage(String username, String content){
+        //todo do something with the duration...
+        System.out.println(content);
+        Toast.makeText(getBaseContext(), content, Toast.LENGTH_SHORT ).show();
+        //Message message = new Message();
+        //message.setUsername(username);
+        //message.setContent(content);
+        //creationTime is set already
+        //message.setDuration(duration);
+        //message.setLocation();
+        //System.out.println(message.toString());
     }
 
     @Override
