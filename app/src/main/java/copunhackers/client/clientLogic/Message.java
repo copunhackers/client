@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class Message {
 
     private String username;
-    private String message;
+    private String content;
     private long creationTime = System.currentTimeMillis() /1000L;
     private long expiryTime;
     private LatLng location;
@@ -19,28 +19,24 @@ public class Message {
         this.username = username;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String message) {
+        this.content = content;
     }
 
     public long getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(long creationTime) {
-        this.creationTime = creationTime;
-    }
-
     public long getExpiryTime() {
         return expiryTime;
     }
 
-    public void setExpiryTime(long expiryTime) {
-        this.expiryTime = expiryTime;
+    public void setExpiryTime(long duration) {
+        this.expiryTime = getCreationTime() + duration*60;
     }
 
     public LatLng getLocation() {

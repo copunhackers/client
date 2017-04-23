@@ -1,48 +1,40 @@
 package copunhackers.client.clientLogic;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-/**
- * Created by vrettos on 22.04.2017.
- */
 
 public class Parser {
 
 
-    public void jsonToMessage(String json){
+    public Message jsonToMessage(String json){
 
         ObjectMapper mapper = new ObjectMapper();
-
-
         try{
             Message message = mapper.readValue(json, Message.class);
 
-            mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-            jsonString = mapper.writeValueAsString(student);
-
-            System.out.println(jsonString);
+            return message;
         }
-        catch (JsonParseException e) { e.printStackTrace();}
-        catch (JsonMappingException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (JsonParseException e) { e.printStackTrace();return null;}
+        catch (JsonMappingException e) { e.printStackTrace(); return null;}
+        catch (IOException e) { e.printStackTrace(); return null;}
     }
 
-    public void messageToJson(Message message){
+    public String messageToJson(Message message){
+
+        ObjectMapper mapper = new ObjectMapper();
+
         try{
+            String json = mapper.writeValueAsString(message);
 
-            mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-            json = mapper.writeValueAsString(message);
-
-            System.out.println(jsonString);
+            return json;
         }
-        catch (JsonParseException e) { e.printStackTrace();}
-        catch (JsonMappingException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (JsonParseException e) { e.printStackTrace(); return null;}
+        catch (JsonMappingException e) { e.printStackTrace(); return null;}
+        catch (IOException e) { e.printStackTrace(); return null;}
     }
 
 }

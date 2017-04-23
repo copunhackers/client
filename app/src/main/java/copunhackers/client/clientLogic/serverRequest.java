@@ -14,11 +14,11 @@ import java.net.URLEncoder;
  */
 public class serverRequest {
 
-    public static void main(String[] args)throws IOException{
+   /* public static void main(String[] args)throws IOException{
         serverRequest sr = new serverRequest();
         sr.dropMessage("{\"namekey\":\"Testing dropMessage\"}");
         sr.gatherMessage("{\"namekey\":\"Testing gatherMessage\"}");
-    }
+    }*/
 
 
     public String gatherMessage(String jsonStringObject)throws IOException{

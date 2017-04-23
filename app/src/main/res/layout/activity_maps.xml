@@ -20,6 +20,7 @@ android:orientation="vertical">
         android:layout_weight="0.2"
         >
         <Button
+            android:id="@+id/messageButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -29,3 +30,4 @@ android:orientation="vertical">
     </LinearLayout>
 
 </LinearLayout>
+            <!--android:onClick="createMessage"-->
