@@ -10,13 +10,19 @@ import java.io.IOException;
  */
 
 public class Logic {
-    public LatLng currentLocation;
-    public Parser parser;
-    public Request request;
+
+    private LatLng currentLocation;
+    private Parser parser;
+    private Request request;
+
+    public Logic() {
+        currentLocation = new LatLng(0, 0);
+        parser = new Parser();
+        request = new Request();
+    }
 
     public void setCurrentLocation(LatLng loc){
         currentLocation = loc;
-
     }
 
     public String prepareMessage(String username, String content){

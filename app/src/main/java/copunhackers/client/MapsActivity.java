@@ -40,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -47,11 +48,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        logic = new Logic();
 
-        //googleApiLocationSetup();
+        googleApiLocationSetup();
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View v = inflater.inflate(R.layout.messagedialog, null);
         final AlertDialog dialog = new AlertDialog.Builder(this)
@@ -69,20 +70,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     @Override
                     public void onClick(View view) {
-                        EditText text = (EditText) v.findViewById(R.id.content);
-                        String value = text.getText().toString();
+                        final String username = ((EditText) v.findViewById(R.id.username)).getText().toString();
+                        final String content = ((EditText) v.findViewById(R.id.content)).getText().toString();
 
-                        String response = logic.prepareMessage("Andreas", value);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                String response = logic.prepareMessage(username, content);
 
-                        if(response==null){
-                            Toast.makeText(getBaseContext(), "an Exception occurred, please try again", Toast.LENGTH_SHORT).show();
-                        }else if(response.length()==0){
-                            //Dismiss once everything is OK.
-                            dialog.dismiss();
-                        }
-                        else{
-                            Toast.makeText(getBaseContext(), response, Toast.LENGTH_SHORT ).show();
-                        }
+                                if(response==null){
+                                    showToast("an Exception occurred, please try again");
+                                }else if(response.length()==0){
+                                    //Dismiss once everything is OK.
+                                    dialog.dismiss();
+                                }
+                                else{
+                                    showToast(response);
+                                }
+                            }
+                        }.start();
                     }
                 });
             }
@@ -96,6 +102,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+    }
+
+    public void showToast(final String toast)
+    {
+        runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(MapsActivity.this, toast, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     void googleApiLocationSetup() {
@@ -124,7 +140,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
@@ -144,9 +161,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // LatLng sydney = new LatLng(-34, 151);
+        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -163,6 +180,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         startLocationUpdates();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                lastLocation.getLatitude(),
+                lastLocation.getLongitude()
+        ), 15));
     }
 
     @Override
