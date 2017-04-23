@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         builder.setMessage("Enter your message")
                 .setCancelable(true)
@@ -59,11 +60,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+        final AlertDialog dialog = builder.create();
+
         Button button = (Button) findViewById(R.id.messageButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder.create().show();
+                dialog.show();
+
+                Toast.makeText(getBaseContext(), "Hello", Toast.LENGTH_SHORT ).show();
             }
         });
     }
