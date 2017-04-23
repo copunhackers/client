@@ -4,11 +4,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Message {
 
-    private String username;
-    private String content;
-    private long creationTime = System.currentTimeMillis() /1000L;
+    public String username;
+    public String content;
+    public long creationTime = System.currentTimeMillis() /1000L;
     private long expiryTime;
-    private LatLng location;
+    public double latitude;
+    public double longitude;
 
 
     public String getUsername() {
@@ -39,12 +40,20 @@ public class Message {
         this.expiryTime = getCreationTime() + duration*60;
     }
 
-    public LatLng getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
 }

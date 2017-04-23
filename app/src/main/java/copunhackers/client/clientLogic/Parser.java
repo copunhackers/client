@@ -37,6 +37,20 @@ public class Parser {
         catch (IOException e) { e.printStackTrace(); return null;}
     }
 
+    public Message[] messagesToDisplay(String jsonArray) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Message[] toDisplay = mapper.readValue(jsonArray, Message[].class);
+            return toDisplay;
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 
+    }
 
 }

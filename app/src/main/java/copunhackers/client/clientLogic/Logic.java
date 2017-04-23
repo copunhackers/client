@@ -11,18 +11,21 @@ import java.io.IOException;
 
 public class Logic {
 
-    private LatLng currentLocation;
+    private double currentLat;
+    private double currentLong;
     private Parser parser;
     private Request request;
 
     public Logic() {
-        currentLocation = new LatLng(0, 0);
+        currentLat = 0;
+        currentLong = 0;
         parser = new Parser();
         request = new Request();
     }
 
-    public void setCurrentLocation(LatLng loc){
-        currentLocation = loc;
+    public void setCurrentLocation(double lat, double lng){
+        currentLat = lat;
+        currentLong = lng;
     }
 
     public String prepareMessage(String username, String content){
@@ -31,9 +34,10 @@ public class Logic {
 
         message.setUsername(username);
         message.setContent(content);
-        //creationTime is set already
+        //creationTime is set automatically
         message.setExpiryTime(60);
-        message.setLocation(currentLocation);
+        message.setLatitude(currentLat);
+        message.setLongitude(currentLong);
         System.out.println(message.toString());
 
         json = parser.messageToJson(message).toString();
@@ -41,6 +45,17 @@ public class Logic {
             return request.dropMessage(json);
         }
         catch(IOException e){e.printStackTrace(); return null;}
+    }
+
+    public Message[] getMessages(double lat, double lng){
+        String jsonArray = "";
+        try {
+            jsonArray = request.gatherMessage("{\"latitude\":" + lat + ",\"longitude\":" + lng + "}");
+        }catch(IOException e){e.printStackTrace();}
+
+        Message[] toDisplay = parser.messagesToDisplay(jsonArray);
+        System.out.println(toDisplay.toString());
+        return toDisplay;
     }
 
 

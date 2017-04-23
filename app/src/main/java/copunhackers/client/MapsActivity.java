@@ -25,8 +25,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.nearby.messages.Messages;
+
+import java.util.Random;
 
 import copunhackers.client.clientLogic.Logic;
 import copunhackers.client.clientLogic.Message;
@@ -126,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mLocationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(5000);
+                .setInterval(60000);
     }
 
     protected void onStart() {
@@ -209,10 +213,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-        LatLng currentLocation = new LatLng(lat, lng);
-        logic.setCurrentLocation(currentLocation);
+        final double lat = location.getLatitude();
+        final double lng = location.getLongitude();
+        logic.setCurrentLocation(lat, lng);
+
+        new Thread() {
+            @Override
+            public void run() {
+                final Message[] toDisplay = logic.getMessages(lat, lng);
+
+                if(toDisplay==null){
+                    showToast("Some Error occurred.. wait a minute");
+                }else if(toDisplay.length==0){
+                    showToast("No messages have been postet in your neighbourhood :(");
+                }
+                else{
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            mMap.clear();
+                            for (Message msg : toDisplay) {
+                                BitmapDescriptorFactory.defaultMarker(new Random().nextInt(360));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(msg.latitude, msg.longitude))
+                                        .title(msg.username)
+                                        .snippet(msg.content));
+                            }
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
 }
