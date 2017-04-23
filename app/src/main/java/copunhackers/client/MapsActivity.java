@@ -48,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-        googleApiLocationSetup();
+        //googleApiLocationSetup();
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -72,49 +72,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         EditText text = (EditText) v.findViewById(R.id.content);
                         String value = text.getText().toString();
 
-                        Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT ).show();
-                        /*
-                        String responds = functionCall(value);
-                        if(responds.length==0){
+                        String response = logic.prepareMessage("Andreas", value);
+
+                        if(response==null){
+                            Toast.makeText(getBaseContext(), "an Exception occurred, please try again", Toast.LENGTH_SHORT).show();
+                        }else if(response.length()==0){
                             //Dismiss once everything is OK.
                             dialog.dismiss();
                         }
                         else{
-                            Toast.makeText(getBaseContext(), responds, Toast.LENGTH_SHORT ).show();
+                            Toast.makeText(getBaseContext(), response, Toast.LENGTH_SHORT ).show();
                         }
-                        */
                     }
                 });
             }
         });
-        /*
-        Dialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        builder.setMessage("Enter your message")
-                .setView(inflater.inflate(R.layout.messagedialog, null))
-                .setPositiveButton("send", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        EditText text = (EditText) findViewById(R.id.content);
-                        String value = text.getText().toString();
-
-                        //take the input values.
-                        //call function to get location.
-                        //Turn it all into a json object.
-                        //
-
-
-                        Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT ).show();
-
-                        logic.prepareMessage(username, content);
-                    }
-                })
-                .setNegativeButton("cancel", null);
-
-        final AlertDialog dialog = builder.create();
-         */
-
-
 
         Button button = (Button) findViewById(R.id.messageButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dialog.show();
             }
         });
-
-
-
 
     }
 
@@ -203,19 +172,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    public void prepareMessage(String username, String content){
-        //todo do something with the duration...
-        System.out.println(content);
-        Toast.makeText(getBaseContext(), content, Toast.LENGTH_SHORT ).show();
-        //Message message = new Message();
-        //message.setUsername(username);
-        //message.setContent(content);
-        //creationTime is set already
-        //message.setDuration(duration);
-        //message.setLocation();
-        //System.out.println(message.toString());
     }
+
 
     @Override
     public void onLocationChanged(Location location) {

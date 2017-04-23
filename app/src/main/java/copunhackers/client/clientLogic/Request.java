@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 /**
  * Created by Andreas on 22-04-2017.
  */
-public class ServerRequest {
+public class Request {
 
    /* public static void main(String[] args)throws IOException{
         serverRequest sr = new serverRequest();

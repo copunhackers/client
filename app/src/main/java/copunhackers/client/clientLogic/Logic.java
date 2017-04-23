@@ -12,14 +12,14 @@ import java.io.IOException;
 public class Logic {
     public LatLng currentLocation;
     public Parser parser;
-    public serverRequest request;
+    public Request request;
 
     public void setCurrentLocation(LatLng loc){
         currentLocation = loc;
 
     }
 
-    public void prepareMessage(String username, String content){
+    public String prepareMessage(String username, String content){
         Message message = new Message();
         String json;
 
@@ -32,10 +32,9 @@ public class Logic {
 
         json = parser.messageToJson(message).toString();
         try {
-            request.dropMessage(json);
+            return request.dropMessage(json);
         }
-        catch(IOException e){e.printStackTrace();}
-
+        catch(IOException e){e.printStackTrace(); return null;}
     }
 
 
