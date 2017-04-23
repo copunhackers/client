@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">client</string>
     <string name="title_activity_maps">Map</string>
-    <string name="whatever">Whatever</string>
+    <string name="Drop_a_message">Drop a message</string>
 </resources>
